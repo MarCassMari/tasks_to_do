@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 
 const connectToDatabase = require("./src/database/mongoose.database");
+const TaskModel = require("./src/models/task.model");
 
 dotenv.config();
 const app = express();
@@ -11,13 +12,8 @@ app.get("/", (req, res) => {
     res.status(200).send("Bem vindo ao meu servidor Express!");
 });
 
-app.get("/tasks", (req, res) => {
-    const tasks = [
-        { id: 1, title: "Estudar Node.js", completed: false },
-        { id: 2, title: "Criar API", completed: false },
-        { id: 3, title: "Testar API", completed: false },
-        { id: 4, title: "Deploy da API", completed: false },
-    ];
+app.get("/tasks", async (req, res) => {
+    const tasks = await TaskModel.find({});
     res.status(200).send(tasks);
 });
 
