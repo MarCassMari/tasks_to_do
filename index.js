@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const TaskRoutes = require("./src/routes/task.routes");
 
 const connectToDatabase = require("./src/database/mongoose.database");
 const TaskModel = require("./src/models/task.model");
@@ -10,87 +11,8 @@ const app = express();
 app.use(express.json());
 
 connectToDatabase();
-app.get("/", (req, res) => {
-    res.status(200).send("Bem vindo ao meu servidor Express!");
-});
 
-app.get("/tasks", async (req, res) => {
-    try {
-        const tasks = await TaskModel.find({});
-        res.status(200).send(tasks);
-    } catch (error) {
-        res.status(500).send(
-            { error: "Erro ao buscar tarefas!!" },
-            error.message
-        );
-    }
-});
-
-app.post("/tasks", async (req, res) => {
-    try {
-        const newTask = new TaskModel(req.body);
-        await newTask.save();
-        res.status(201).send(newTask);
-    } catch (error) {
-        res.status(500).send(
-            { error: "Erro ao criar tarefa!!" },
-            error.message
-        );
-    }
-});
-
-app.delete("/tasks/:id", async (req, res) => {
-    try {
-        const taskId = req.params.id;
-        const taskExists = await TaskModel.findById(taskId);
-        if (!taskExists) {
-            return res.status(404).send({ error: "Tarefa não encontrada!" });
-        }
-        const deletedTask = await TaskModel.findByIdAndDelete(taskId);
-        res.status(200).send(deletedTask);
-    } catch (error) {
-        res.status(500).send();
-    }
-});
-
-app.get("/tasks/:id", async (req, res) => {
-    try {
-        const taskId = req.params.id;
-        const task = await TaskModel.findById(taskId);
-        if (!task) {
-            return res.status(404).send({
-                error: "Tarefa não foi encontrada no banco de dados!",
-            });
-        }
-        res.status(200).send(task);
-    } catch (error) {
-        res.status(500).send();
-    }
-});
-
-app.patch("/tasks/:id", async (req, res) => {
-    try {
-        const taskId = req.params.id;
-
-        const updatedTask = await TaskModel.findById(taskId);
-        const allowedUpdates = ["description"];
-        const updates = Object.keys(req.body);
-
-        for (const update of updates) {
-            if (allowedUpdates.includes(update)) {
-                updatedTask[update] = req.body[update];
-            } else {
-                return res.status(400).send({
-                    error: "Atualização inválida! O campo editado não pode ser atualizado...",
-                });
-            }
-        }
-        await updatedTask.save();
-        res.status(200).send(updatedTask);
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-});
+app.use("/tasks", TaskRoutes);
 
 app.listen(3000, () => {
     console.log("Servidor rodando na porta 3000");
