@@ -68,6 +68,18 @@ app.get("/tasks/:id", async (req, res) => {
     }
 });
 
+app.patch("/tasks/:id", async (req, res) => {
+    try {
+        const taskId = req.params.id;
+        const taskData = req.body;
+
+        const updatedTask = await TaskModel.findByIdAndUpdate(taskId, taskData);
+        return res.status(200).send(updatedTask);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
 app.listen(3000, () => {
     console.log("Servidor rodando na porta 3000");
 });
