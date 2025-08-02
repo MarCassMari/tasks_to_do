@@ -1,18 +1,41 @@
 const express = require("express");
+const dotenv = require("dotenv");
 
+const connectToDatabase = require("./src/database/mongoose.database");
+const TaskModel = require("./src/models/task.model");
+
+dotenv.config();
 const app = express();
+app.use(express.json());
+
+connectToDatabase();
 app.get("/", (req, res) => {
     res.status(200).send("Bem vindo ao meu servidor Express!");
 });
 
-app.get("/tasks", (req, res) => {
-    const tasks = [
-        { id: 1, title: "Estudar Node.js", completed: false },
-        { id: 2, title: "Criar API", completed: false },
-        { id: 3, title: "Testar API", completed: false },
-        { id: 4, title: "Deploy da API", completed: false },
-    ];
-    res.status(200).send(tasks);
+app.get("/tasks", async (req, res) => {
+    try {
+        const tasks = await TaskModel.find({});
+        res.status(200).send(tasks);
+    } catch (error) {
+        res.status(500).send(
+            { error: "Erro ao buscar tarefas!!" },
+            error.message
+        );
+    }
+});
+
+app.post("/tasks", async (req, res) => {
+    try {
+        const newTask = new TaskModel(req.body);
+        await newTask.save();
+        res.status(201).send(newTask);
+    } catch (error) {
+        res.status(500).send(
+            { error: "Erro ao criar tarefa!!" },
+            error.message
+        );
+    }
 });
 
 app.listen(3000, () => {
