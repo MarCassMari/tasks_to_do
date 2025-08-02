@@ -71,10 +71,22 @@ app.get("/tasks/:id", async (req, res) => {
 app.patch("/tasks/:id", async (req, res) => {
     try {
         const taskId = req.params.id;
-        const taskData = req.body;
 
-        const updatedTask = await TaskModel.findByIdAndUpdate(taskId, taskData);
-        return res.status(200).send(updatedTask);
+        const updatedTask = await TaskModel.findById(taskId);
+        const allowedUpdates = ["description"];
+        const updates = Object.keys(req.body);
+
+        for (const update of updates) {
+            if (allowedUpdates.includes(update)) {
+                updatedTask[update] = req.body[update];
+            } else {
+                return res.status(400).send({
+                    error: "Atualização inválida! O campo editado não pode ser atualizado...",
+                });
+            }
+        }
+        await updatedTask.save();
+        res.status(200).send(updatedTask);
     } catch (error) {
         res.status(500).send(error.message);
     }
