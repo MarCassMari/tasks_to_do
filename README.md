@@ -63,3 +63,22 @@ O servidor estará disponível em http://localhost:3000.
 -   [Mongoose](https://mongoosejs.com/) - ODM para MongoDB
 -   [Nodemon](https://nodemon.io/) - Ferramenta para reiniciar automaticamente o servidor durante o desenvolvimento
 -   [Postman](https://www.postman.com/) - Ferramenta para testar APIs e endpoints
+
+## Como contribuir
+
+Contribuições são bem-vindas! Se quiser ajudar a melhorar este projeto:
+
+1. Faça um **fork** do repositório
+2. Crie uma branch para sua feature ou correção:
+    ```bash
+    git checkout -b minha-feature
+    ```
+3. Faça suas alterações e commit seguindo boas práticas:
+    ```bash
+    git commit -m feat: "descrição da sua mudança"
+    ```
+4. Envie seu fork:
+    ```bash
+    git push origin minha-feature
+    ```
+5. Abra um Pull Request explicando suas mudanças: Se tiver dúvidas, abra um **issue** antes para conversarmos.
