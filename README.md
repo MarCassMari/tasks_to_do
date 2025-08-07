@@ -8,7 +8,7 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas em s
 
 -   [Node.js](https://nodejs.org/) (versão 14 ou superior)
 -   [NPM](https://www.npmjs.com/) ou [Yarn](https://yarnpkg.com/)
--   Uma conta no [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) para configurar um cluster do MongoDB - Composs
+-   Uma conta no [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) para configurar um cluster do MongoDB - Não vai ter nada de composs
 
 ## Instalação
 
