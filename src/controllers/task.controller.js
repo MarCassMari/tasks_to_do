@@ -6,15 +6,28 @@ class TaskController {
         this.res = res;
     }
 
-    getTasks() {
+    async getTasks() {
         try {
-            const tasks = TaskModel.find({});
+            const tasks = await TaskModel.find({});
             this.res.status(200).send(tasks);
         } catch (error) {
             this.res.status(500).send({
                 error: "Erro ao buscar tarefas!!",
                 message: error.message,
             });
+        }
+    }
+
+    async newTask() {
+        try {
+            const newTask = new TaskModel(this.req.body);
+            await newTask.save();
+            this.res.status(201).send(newTask);
+        } catch (error) {
+            this.res
+                .status(500)
+                .send({ error: "Erro ao criar tarefa!!" }, error.message);
+            console.log(error);
         }
     }
 }

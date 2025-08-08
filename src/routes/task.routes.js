@@ -9,16 +9,7 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-    try {
-        const newTask = new TaskModel(req.body);
-        await newTask.save();
-        res.status(201).send(newTask);
-    } catch (error) {
-        res.status(500).send(
-            { error: "Erro ao criar tarefa!!" },
-            error.message
-        );
-    }
+    return new TaskController(req, res).newTask();
 });
 
 router.delete("/:id", async (req, res) => {
