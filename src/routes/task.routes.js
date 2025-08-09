@@ -17,18 +17,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-    try {
-        const taskId = req.params.id;
-        const task = await TaskModel.findById(taskId);
-        if (!task) {
-            return res.status(404).send({
-                error: "Tarefa não foi encontrada no banco de dados!",
-            });
-        }
-        res.status(200).send(task);
-    } catch (error) {
-        res.status(500).send();
-    }
+    return new TaskController(req, res).getTaskById();
 });
 
 router.patch("/:id", async (req, res) => {
