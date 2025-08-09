@@ -13,17 +13,7 @@ router.post("/", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-    try {
-        const taskId = req.params.id;
-        const taskExists = await TaskModel.findById(taskId);
-        if (!taskExists) {
-            return res.status(404).send({ error: "Tarefa não encontrada!" });
-        }
-        const deletedTask = await TaskModel.findByIdAndDelete(taskId);
-        res.status(200).send(deletedTask);
-    } catch (error) {
-        res.status(500).send();
-    }
+    return new TaskController(req, res).deleteTask();
 });
 
 router.get("/:id", async (req, res) => {
