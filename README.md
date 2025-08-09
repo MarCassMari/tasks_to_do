@@ -68,7 +68,7 @@ O servidor estará disponível em http://localhost:3000.
 
 Contribuições são bem-vindas! Se quiser ajudar a melhorar este projeto:
 
-1. Faça um **fork** do repositório
+1. Faça um **fork** do repositório.
 2. Crie uma branch para sua feature ou correção:
     ```bash
     git checkout -b minha-feature
