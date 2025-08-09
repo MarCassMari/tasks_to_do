@@ -1,7 +1,7 @@
 const express = require("express");
 
 const TaskController = require("../controllers/task.controller");
-const TaskModel = require("../models/task.model");
+
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -21,27 +21,7 @@ router.get("/:id", async (req, res) => {
 });
 
 router.patch("/:id", async (req, res) => {
-    try {
-        const taskId = req.params.id;
-
-        const updatedTask = await TaskModel.findById(taskId);
-        const allowedUpdates = ["description"];
-        const updates = Object.keys(req.body);
-
-        for (const update of updates) {
-            if (allowedUpdates.includes(update)) {
-                updatedTask[update] = req.body[update];
-            } else {
-                return res.status(400).send({
-                    error: "Atualização inválida! O campo editado não pode ser atualizado...",
-                });
-            }
-        }
-        await updatedTask.save();
-        res.status(200).send(updatedTask);
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
+    return new TaskController(req, res).updateTask();
 });
 
 module.exports = router;

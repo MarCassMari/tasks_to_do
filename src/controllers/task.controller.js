@@ -61,6 +61,29 @@ class TaskController {
             this.res.status(500).send();
         }
     }
+
+    async updateTask() {
+        try {
+            const taskId = this.req.params.id;
+            const updatedTask = await TaskModel.findById(taskId);
+            const allowedUpdates = ["description"];
+            const updates = Object.keys(this.req.body);
+
+            for (const update of updates) {
+                if (allowedUpdates.includes(update)) {
+                    updatedTask[update] = this.req.body[update];
+                } else {
+                    return this.res.status(400).send({
+                        error: "Atualização inválida! O campo editado não pode ser atualizado...",
+                    });
+                }
+            }
+            await updatedTask.save();
+            this.res.status(200).send(updatedTask);
+        } catch (error) {
+            this.res.status(500).send(error.message);
+        }
+    }
 }
 
 module.exports = TaskController;
