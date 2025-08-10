@@ -1,4 +1,9 @@
 const TaskModel = require("../models/task.model.js");
+const { notFoundError } = require("../errors/mongodb.errors.js");
+const {
+    internalServerError,
+    badRequestError,
+} = require("../errors/general.errors.js");
 
 class TaskController {
     constructor(req, res) {
@@ -11,10 +16,10 @@ class TaskController {
             const tasks = await TaskModel.find({});
             this.res.status(200).send(tasks);
         } catch (error) {
-            this.res.status(500).send({
-                error: "Erro ao buscar tarefas!!",
-                message: error.message,
-            });
+            return internalServerError(
+                this.res,
+                "Erro ao buscar tarefas! Verifique a conexão com o banco de dados."
+            );
         }
     }
 
@@ -24,10 +29,10 @@ class TaskController {
             await newTask.save();
             this.res.status(201).send(newTask);
         } catch (error) {
-            this.res
-                .status(500)
-                .send({ error: "Erro ao criar tarefa!!" }, error.message);
-            console.log(error);
+            return badRequestError(
+                this.res,
+                "Erro ao criar nova tarefa! Verifique os dados enviados."
+            );
         }
     }
 
@@ -36,14 +41,15 @@ class TaskController {
             const taskId = this.req.params.id;
             const taskExists = await TaskModel.findById(taskId);
             if (!taskExists) {
-                return this.res
-                    .status(404)
-                    .send({ error: "Tarefa não encontrada!" });
+                return notFoundError(
+                    this.res,
+                    "Tarefa não encontrada nos registros!"
+                );
             }
             const deletedTask = await TaskModel.findByIdAndDelete(taskId);
             this.res.status(200).send(deletedTask);
         } catch (error) {
-            this.res.status(500).send();
+            return internalServerError(this.res, "Erro ao deletar tarefa!");
         }
     }
 
@@ -52,13 +58,17 @@ class TaskController {
             const taskId = this.req.params.id;
             const task = await TaskModel.findById(taskId);
             if (!task) {
-                return this.res.status(404).send({
-                    error: "Tarefa não foi encontrada no banco de dados!",
-                });
+                return notFoundError(
+                    this.res,
+                    "Tarefa não encontrada nos registros!"
+                );
             }
-            this.res.status(200).send(task);
+            return this.res.status(200).send(task);
         } catch (error) {
-            this.res.status(500).send();
+            return internalServerError(
+                this.res,
+                "Erro ao buscar tarefa pelo ID!"
+            );
         }
     }
 
@@ -73,15 +83,16 @@ class TaskController {
                 if (allowedUpdates.includes(update)) {
                     updatedTask[update] = this.req.body[update];
                 } else {
-                    return this.res.status(400).send({
-                        error: "Atualização inválida! O campo editado não pode ser atualizado...",
-                    });
+                    return notFoundError(
+                        this.res,
+                        "Campo não permitido para atualização!"
+                    );
                 }
             }
             await updatedTask.save();
             this.res.status(200).send(updatedTask);
         } catch (error) {
-            this.res.status(500).send(error.message);
+            return internalServerError(this.res, "Erro ao atualizar tarefa!");
         }
     }
 }
