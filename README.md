@@ -57,12 +57,55 @@ npm run start:dev
 
 O servidor estará disponível em http://localhost:3000.
 
+## Rodando os Testes
+
+Este projeto utiliza o framework de testes unitários [Jest](https://jestjs.io/docs/getting-started). Siga os passos abaixo para rodar os testes:
+
+## Passo 1: Instalar dependências de desenvolvimento
+
+Certifique-se de que as dependências de desenvolvimento, incluindo o Jest, estão instaladas. Caso ainda não tenha instalado, execute:
+
+```bash
+npm install
+```
+
+## Passo 2: Rodar os testes
+
+Para executar todos os testes, utilize o comando:
+
+```bash
+npm test
+```
+
+O Jest irá procurar por arquivos de teste no projeto (arquivos com a extensão `.test.js` ou `.spec.js`) e executar os testes automaticamente.
+
+## Passo 3: Ver resultados dos testes
+
+Após rodar os testes, você verá no terminal os resultados indicando quais testes passaram ou falharam.
+
+## Passo 4: Testar um arquivo específico (opcional)
+
+Se quiser rodar os testes de um arquivo específico, use o seguinte comando:
+
+```bash
+npm test -- src/controllers/tests/task.controller.test.js
+```
+
+Substitua o caminho pelo arquivo de teste que deseja executar.
+
+## Passo 5: Configuração adicional (opcional)
+
+Caso precise configurar o Jest, você pode criar um arquivo `jest.config.js` na raiz do projeto para personalizar as opções de teste. Consulte a [documentação oficial do Jest](https://jestjs.io/docs/configuration) para mais detalhes.
+
+Agora você está pronto para rodar os testes e garantir a qualidade do código!
+
 # Tecnologias usadas:
 
 -   [Express](https://expressjs.com/) - Framework para Node.js
 -   [Mongoose](https://mongoosejs.com/) - ODM para MongoDB
 -   [Nodemon](https://nodemon.io/) - Ferramenta para reiniciar automaticamente o servidor durante o desenvolvimento
 -   [Postman](https://www.postman.com/) - Ferramenta para testar APIs e endpoints
+-   [Jest](https://jestjs.io/docs/getting-started) - Framework de testes unitários
 
 ## Como contribuir
 
